@@ -61,6 +61,7 @@ class human :
         self.jumpCount=10
         self.hitbox=(self.x +17,self.y+11,29,52)
         self.health=10
+        self.life=20
     def draw(self,win):
         if self.walkCount+1>=27:
             self.walkCount=0
@@ -191,7 +192,9 @@ def gameOver():
 def redrawGameWindow():
     win.blit(bg,(0,0))
     text=font.render('SCORE :'+str(score),1,(0,0,0))
-    win.blit(text,(380,10))
+    lifecount = font.render('LIFE : ' + str(man.life), 1, (0, 0, 0))
+    win.blit(text, (380, 10))
+    win.blit(lifecount,(380,30))
     man.draw(win)
     for bullet in bullets:
         bullet.drawBullet(win)
@@ -234,8 +237,9 @@ while run:
     if goblin1.visible == True:
         if man.hitbox[1] < goblin1.hitbox[1] + goblin1.hitbox[3] and man.hitbox[1] + man.hitbox[3] > goblin1.hitbox[1]:
             if man.hitbox[0] + man.hitbox[2] > goblin1.hitbox[0] and man.hitbox[0] < goblin1.hitbox[0] + goblin1.hitbox[2]:
+                man.life-=1
                 score -= 5
-                if score< 0:
+                if score< 0 or man.life==0:
                     gameOver()
                     run=False
                 else :
@@ -247,6 +251,7 @@ while run:
     if goblin2.visible == True:
         if man.hitbox[1] < goblin2.hitbox[1] + goblin2.hitbox[3] and man.hitbox[1] + man.hitbox[3] > goblin2.hitbox[1]:
             if man.hitbox[0] + man.hitbox[2] > goblin2.hitbox[0] and man.hitbox[0] < goblin2.hitbox[0] + goblin2.hitbox[2]:
+                man.life -= 1
                 score -= 5
                 if score< 0:
                     gameOver()
